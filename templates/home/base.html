@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My News Site{% endblock %}</title>
+    <script src="https://kit.fontawesome.com/your-kit.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    {% include 'home/News_post.html' %}
+    {% include 'home/header.html' %}
+    {% block content %}{% endblock %}
+    {% include 'home/footer.html' %}
+
+</body>
+</html>

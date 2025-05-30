@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Menu with Sidebar</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+    transition: margin-left 0.3s ease;
+    position: relative;
+}
+body.shifted {
+    margin-left: 250px;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+/* Top Navigation */
+.top-nav {
+    background-color:#34495e;
+    color: white;
+    padding: 8px 0;
+    font-size: 14px;
+    position: relative;
+}
+
+.top-nav .container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin: 0 1rem;
+    padding: 10px 0;
+}
+.hamburger {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    align-items: flex-start;
+    cursor: pointer;
+    display: none; /* Hidden by default on desktop */
+}
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    margin-right: auto;
+}
+.nav-menu li a {
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+}
+.nav-menu li a:hover {
+    color: #007bff;
+}
+.user-actions {
+    display: flex;
+    position: absolute;
+    right: 20px;
+    gap: 15px;
+    align-items: center;
+    justify-items: flex-end;
+}
+.user-actions a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.user-actions a:hover,
+.user-actions i:hover {
+    color: #007bff;
+    cursor: pointer;
+}
+  /* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    left: -250px;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #2c3e50;
+    transition: left 0.3s ease;
+    z-index: 1001;
+    overflow-y: auto;
+}
+
+.sidebar.active {
+    left: 0;
+}
+.sidebar-header {
+    padding: 20px;
+    background-color: #34495e;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 1px solid #4a5f7a;
+}
+/* Close Button */
+.mobile-close {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+.mobile-close:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.mobile-close::before {
+    content: "×";
+}
+.mobile-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+ }
+.mobile-menu > li {
+    border-bottom: 1px solid #4a5f7a;
+}
+.mobile-menu > li > a {
+    display: block;
+    padding: 15px 20px;
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+.mobile-menu > li > a:hover {
+    background-color: #34495e;
+}
+        /* Dropdown Styles */
+.dropdown, .dropdown-content {
+    list-style: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+.dropdown.active, .dropdown-content.active {
+    max-height: 500px;
+}
+.dropdown li, .dropdown-content li {
+    background-color: #1a252f;
+}
+.dropdown li a, .dropdown-content li a {
+    display: block;
+    padding: 12px 40px;
+    color: #bdc3c7;
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px solid #2c3e50;
+    transition: background-color 0.3s ease;
+}
+.dropdown li a:hover, .dropdown-content li a:hover {
+    background-color: #34495e;
+    color: #ecf0f1;
+}
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+}
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+/* Dropdown Arrow */
+.has-dropdown {
+    position: relative;
+}
+.has-dropdown::after {
+    content: "▼";
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+.has-dropdown.active::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+@media (min-width: 769px) {
+    .hamburger {
+        display: block; /* Show hamburger on mobile */
+        order: 1;
+        align-items: flex-start; /* Position first */
+    }
+    .nav-menu {
+        display: flex;/* Hide regular menu on mobile */
+        order: 2;
+    }
+    .user-actions {
+        order: 3; /* Position last */
+        justify-items: flex-end;
+    }
+    .top-nav .container {
+        flex-wrap: wrap;
+    }
+}
+</style>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="container">
+                <button class="hamburger" id="hamburger">
+                    ☰
+                </button>
+                <div class="overlay" id="overlay"></div>
+                <ul class="nav-menu">
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='National') }}">National</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Politics') }}">Politics</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Valley') }}">Valley</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Health') }}">Health</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Technology') }}">Technology</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Sports') }}">Sports</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Culture & Lifestyle') }}">Culture & Lifestyle</a></li>
+                </ul>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="mobile-close" id="mobileClose"></button>
+        </div>
+        
+        <ul class="mobile-menu" id="mobileMenu">
+            <li>
+                <a href="{{ url_for('home_blueprint.category_posts', category_name='National') }}" class="has-dropdown" data-dropdown="national-dropdown">National</a>
+                <ul class="dropdown" id="national-dropdown">
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Nepal Security') }}">Nepal Security</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Gandaki Province') }}">Gandaki Province</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Koshi Province') }}">Koshi Province</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Bagmati Province') }}">Bagmati Province</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Madhesh Province') }}">Madesh Province</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Lumbini Province') }}">Lumbini Province</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Karnali Province') }}">Karnali Province</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Politics</a></li>
+            <li>
+                <a href="#" class="has-dropdown" data-dropdown="valley-dropdown">Valley</a>
+                <ul class="dropdown-content" id="valley-dropdown">
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Kathmandu') }}">Kathmandu</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Lalitpur') }}">Lalitpur</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Bhaktapur') }}">Bhaktapur</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Health</a></li>
+            <li><a href="#">Technology</a></li>
+            <li>
+                <a href="{{ url_for('home_blueprint.category_posts', category_name= 'Sports') }}"  class="has-dropdown" data-dropdown="sports-dropdown">Sports</a>
+                <ul class="dropdown-content" id="sports-dropdown">
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Football') }}">Football</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Cricket') }}">Cricket</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='International Sports') }}">International Sports</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="{{ url_for('home_blueprint.category_posts', category_name='Culture & Lifestyle') }}" class="has-dropdown" data-dropdown="culture-dropdown">Culture & Lifestyle</a>
+                <ul class="dropdown-content" id="culture-dropdown">
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Arts') }}">Arts</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Movies') }}">Movies</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Life & Style') }}">Life & Style</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Entertainment') }}">Entertainment</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Books') }}">Books</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Fashion') }}">Fashion</a></li>
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Theater') }}">Theater</a></li>
+                </ul>
+            </li>
+            <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Food') }}" class="has-dropdown" data-dropdown="food-dropdown">Food</a>
+               <ul class="dropdown-content" id="food-dropdown">
+                    <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Recipes') }}">Recipes</a> 
+                    </ul>
+                </li>
+            <li><a href="{{ url_for('home_blueprint.category_posts', category_name='Travel') }}">Travel</a></li>
+        </ul>
+    </div>
+    <div class="user-actions">
+                    <a href="/login">
+                        <i class="fas fa-user"></i> </a>
+                        <i class="fas fa-search"></i>
+                    </div>
+    </div>
+</nav>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const mobileClose = document.getElementById('mobileClose');
+        const dropdownLinks = document.querySelectorAll('.has-dropdown');
+         const body = document.body;
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            body.classList.toggle('shifted');
+        }
+
+        // Close sidebar
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            body.classList.remove('shifted'); 
+        }
+
+        // Event listeners
+        hamburger.addEventListener('click', toggleSidebar);
+        mobileClose.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+        // Dropdown functionality
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const dropdownId = this.getAttribute('data-dropdown');
+                const dropdown = document.getElementById(dropdownId);
+                
+                // Close other dropdowns
+                dropdownLinks.forEach(otherLink => {
+                    if (otherLink !== this) {
+                        otherLink.classList.remove('active');
+                        const otherDropdownId = otherLink.getAttribute('data-dropdown');
+                        const otherDropdown = document.getElementById(otherDropdownId);
+                        if (otherDropdown) {
+                            otherDropdown.classList.remove('active');
+                        }
+                    }
+                });
+                
+                // Toggle current dropdown
+                this.classList.toggle('active');
+                dropdown.classList.toggle('active');
+            });
+        });
+
+        // Close sidebar when clicking on a regular link (not dropdown)
+        document.querySelectorAll('.mobile-menu a:not(.has-dropdown)').forEach(link => {
+            link.addEventListener('click', closeSidebar);
+        });
+
+        // Close sidebar on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+    </script>
+</body>
+</html>

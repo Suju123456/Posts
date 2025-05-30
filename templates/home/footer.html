@@ -1,0 +1,132 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+    /* Footer Styles */
+.footer {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 40px 0 20px;
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 1.6;
+}
+.footer a {
+    color: #bdc3c7;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.footer a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+.footer h5 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.footer-section {
+    margin-bottom: 10px;
+}
+.footer-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+.social-icons a {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+.social-icons i {
+    margin-right: 8px;
+    width: 20px;
+    text-align: center;
+}
+.footer-bottom {
+    border-top: 1px solid #34495e;
+    padding-top: 20px;
+    margin-top: 30px;
+}
+.footer-bottom p {
+    margin: 0;
+    color: #bdc3c7;
+    font-size: 14px;
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer-section {
+        text-align: center;
+    }
+    
+    .footer-section h5 {
+        margin-top: 20px;
+    }
+    
+    .social-icons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Font Awesome icons (if not already loaded elsewhere) */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+</style>
+<footer class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- ABOUT US Column -->
+                <div class="col-md-3 col-sm-6 footer-section">
+                    <h5>ABOUT US</h5>
+                    <ul>
+                        <li><a href="{{url_for('home_blueprint.about')}}">About the Post</a></li>
+                        <li><a href="#">Masthead</a></li>
+                        <li><a href="#">Editorial Standards & Integrity</a></li>
+                        <li><a href="#">Workplace: Harassment Policy</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <!-- READ US Column -->
+                <div class="col-md-3 col-sm-6 footer-section">
+                    <h5>READ US</h5>
+                    <ul>
+                        <li><a href="#">Home Delivery</a></li>
+                        <li><a href="#">ePaper</a></li>
+                    </ul>
+                </div>
+                
+                <!-- CONTACT US Column -->
+                <div class="col-md-3 col-sm-6 footer-section">
+                    <h5>CONTACT US</h5>
+                    <ul>
+                        <li><a href="#">Write for the Post</a></li>
+                        <li><a href="#">Letters to the Editor</a></li>
+                        <li><a href="#">Advertise in the Post</a></li>
+                        <li><a href="#">Work for the Post</a></li>
+                        <li><a href="#">Send us a tip</a></li>
+                    </ul>
+                </div>
+                
+                <!-- INTERACT WITH US Column -->
+                <div class="col-md-3 col-sm-6 footer-section">
+                    <h5>INTERACT WITH US</h5>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-twitter"></i> Twitter</a><br>
+                        <a href="#"><i class="fab fa-facebook"></i> Facebook</a><br>
+                        <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                    </div>
+                    <h5 class="mt-4">OUR PUBLICATIONS</h5>
+                    <!-- Add sister publications here if needed -->
+                </div>
+            </div>
+            
+            <div class="footer-bottom text-center">
+                <p>&copy; 2025 The Post. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+  

@@ -1,0 +1,154 @@
+<style>
+/* Main Header */
+.main-header {
+    background-color: white;
+    border-bottom: 3px solid #007bff;
+    padding: 20px 0;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 1rem;
+    padding: 10px 0;
+    height: 50px;
+}
+
+.date-weather {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.date {
+    font-weight: 500;
+}
+
+.weather-info {
+    position: absolute;
+    line-height: 1.4;
+    right: 20px;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.logo img {
+    position: absolute;
+    width: 350px;
+    height: auto;
+    top:-70px;
+    left: 50%;
+    transition: transform 0.3s ease, top 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.08);
+}
+
+.tagline {
+    display: block;
+    margin-top: -20px; /* Pull tagline up to sit just below the image */
+    color: #666;
+    font-size: 25px;
+    left: 52%;
+    position: absolute;
+    letter-spacing: 1px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    font-style: normal;
+    color: black;
+}
+
+/* Responsive Styling */
+@media (max-width: px) {
+    .date-weather {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    .weather-info {
+        text-align: center;
+    }
+}
+</style>
+    
+    <!-- Main Header -->
+                <header class="main-header">
+                    <div class="header-container">
+                        <div class="date-weather">
+                            <div class="date" id="current-date">
+                                <script>
+                                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                                const today = new Date();
+                                document.getElementById('current-date').textContent = today.toLocaleDateString('en-US', options);
+                                </script>
+                                </div>
+                                <div class="weather-info" style="float: right;">
+                                    <script>
+                                    const city = 'Kathmandu';
+                                    const apiKey = '177feec93427f1acb3dd403ff12c1256';
+                                    const baseUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+                                    fetch(baseUrl)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                        throw new Error('Network response was not ok')
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    const description = data.weather[0].description;
+                                    const temp = data.main.temp;
+                                    const humidity=data.main.temp;
+                                    const feelsLike = data.main.feels_like;
+                                    const lat = data.coord.lat;
+                                    const lon = data.coord.lon;
+                                    const airUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+                                    fetch(airUrl)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Failed to fetch air quality');
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(airData => {
+                                        const aqi = airData.list[0].main.aqi;
+                                        // Map AQI number to description
+                                        const aqiDescription = {
+                                            1: 'Good',
+                                            2: 'Fair',
+                                            3: 'Moderate',
+                                            4: 'Poor',
+                                            5: 'Very Poor'
+                                        };
+                                        const weatherInfoDiv = document.querySelector('.weather-info');
+                                        weatherInfoDiv.innerHTML = `
+                                        ${description} ${temp} °C ${city}<br/>
+                                        ${aqiDescription[aqi]} (Air Quality in Kathmandu: ${aqi})
+                                        `;
+                                    })
+                                    .catch(error => {
+                                        console.error('Error fetching air quality data:', error);
+                                    });
+                                })
+                                .catch(error => {
+                                    console.error('Error fetching weather data:', error);
+                                    const weatherInfoDiv = document.querySelector('.weather-info');
+                                    weatherInfoDiv.innerHTML = '<p>Failed to fetch weather data. Please try again later.</p>';
+                                });
+                                </script>
+                                </div>
+                            </div>
+                            <div class="logo">
+                                <img src="{{ url_for('static', filename='assets/img/post.png') }}" alt="">
+                                 <div class="tagline">Without Fear or Favour</div>
+                                </div>
+                            </div>
+                            </header>

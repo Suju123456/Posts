@@ -1,0 +1,58 @@
+{% extends 'home/base.html' %}
+{% block content %}
+
+<div class="row mb-3">
+  <div class="col-md-8">
+    <h4 style="margin-left:20px; color: red;">LATEST UPDATES</h4>
+  </div>
+  <div class="col-md-4 flex-start">
+    <h4 style="color: red;">MOST READ</h4>
+  </div>
+</div>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <div class="row">
+    <div class="col-md-8">
+  {% for post in posts %}
+ <div class="shadow p-3 mb-5 bg-body rounded">
+<div class="row align-items-start">
+<div class="col-md-8 md-2">
+      <a href="{{ url_for('home_blueprint.post',id=post.id )}}" style="text-decoration: none; font-size:20px; font-weight:bold;color:black;">
+  {{ post.title }}
+</a> <br/>
+By {{post.author.username }} <br/>
+  {{ post.content|striptags|truncate(100) }}
+  </div>
+  <div class="col-md-4">
+   {% if post.banner_image %}
+ <img src="{{ url_for('static', filename='assets/img/' + post.banner_image.split('/')[-1])}}" alt="" width="100%" height="175">
+ {% endif %}
+  </div>
+</div>
+ </div>
+{% endfor %}
+</div>
+<div class="col-md-4">
+  {% for post in posts %}
+    <div class="shadow-sm p-2 mb-3 bg-body rounded">  <!-- More compact -->
+      <div class="row g-2 align-items-center">
+        <div class="col-7">  <!-- Slightly narrower text column -->
+          <a href="{{ url_for('home_blueprint.post', id=post.id)}}" class="text-decoration-none">
+            <h6 class="fw-bold text-dark mb-1">{{ post.title }}</h6>  <!-- h6 instead of h5 -->
+          </a>
+        </div>
+        <div class="col-5 text-end">  <!-- Slightly wider image column -->
+          {% if post.banner_image %}
+            <img src="{{ url_for('static', filename='assets/img/' + post.banner_image.split('/')[-1])}}" 
+                 class="img-fluid rounded" 
+                 style="max-height: 60px; width: auto; object-fit: cover;">
+          {% endif %}
+        </div>
+      </div>
+      <!-- <small class="text-muted d-block mt-1">By {{ post.author.username }}</small> -->
+    </div>
+  {% endfor %}
+</div>
+</div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+     
+{% endblock %}
