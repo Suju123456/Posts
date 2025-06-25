@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} eCommerce {% endblock %} 
+{% block title %} View Post {% endblock %} 
 
 <!-- Element injected in the BODY element -->
 {% block body_class %} sidebar-mini {% endblock body_class %}
@@ -18,7 +18,6 @@
 {% endblock stylesheets %}
 
 {% block content %}
-
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -30,9 +29,9 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
-
     <!-- Main content -->
-    <section class="content">
+    <section class="cont
+    ent">
 
       <!-- Default box -->
       <div class="card card-solid">
@@ -48,11 +47,11 @@
                 <span class="badge bg-light text-dark">Published at: {{ post.date_posted.strftime('%d %b %Y') }}</span> -->
                 </div>
             <div class="col-md-6">
-              <h3>{{post.categories.name}}</h3>
-              <h3 class="my-3">{{post.title}}</h3>  
-            <div class="tab-pane fade show active" id="news-desc" role="tabpanel" aria-labelledby="news-desc-tab">
-              {{ post.content|striptags|truncate(1000)  }}
-            </div>
+              <h3 style="font-weight: bold; color: black;">{{post.categories.name}}</h3>
+              <h3 class="my-3" style="font-weight: bold; color: black;">{{post.title}}</h3>  
+              <div class="tab-pane fade show active" id="news-desc" role="tabpanel" aria-labelledby="news-desc-tab" style="text-align: justify;">
+                {{ post.content|striptags|truncate(1000) }}
+              </div>
            </div>
            </div>
           <div class=" mt-3">

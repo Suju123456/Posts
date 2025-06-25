@@ -15,7 +15,13 @@ from werkzeug.utils import secure_filename
 import os
 from datetime import datetime
 from apps.authentication.oauth import permission_required
+from flask import make_response, send_from_directory
 
+@blueprint.route('/static/<path:filename>')
+def custom_static(filename):
+    response = make_response(send_from_directory('static', filename))
+    response.headers['Cache-Control'] = 'no-store'
+    return response
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config["ALLOWED_EXTENSIONS"]
 
@@ -23,6 +29,7 @@ def allowed_file(filename):
 def home():
     posts = NewsPost.query.order_by(NewsPost.date_posted)
     return render_template("home/posts.html", segment='index', posts=posts)  
+
 @blueprint.route('/about') 
 def  about():
     return render_template("home/aboutus.html", segment ='index')
@@ -92,14 +99,6 @@ def get_category_tree():
         tree[parent] = parent.subcategories
     return tree
 
-# @blueprint.before_app_request
-# def create_default_categories():
-#     default_names = ['Sports', 'Technology', 'Politics', 'Entertainment','National', 'Valley','Health','Culture & Lifestyle']
-#     for name in default_names:
-#         if not Category.query.filter_by(name=name).first():
-#             db.session.add(Category(name=name))
-#     db.session.commit()
-
 @blueprint.route('/category/<string:category_name>')
 def category_posts(category_name):
     category = Category.query.filter_by(name=category_name).first()
@@ -119,7 +118,7 @@ def News_post():
     posts = NewsPost.query.order_by(NewsPost.date_posted)
     return render_template('home/News_post.html',segment='index', posts=posts)
 
-@blueprint.route('/view_post')
+@blueprint.route('/post')
 def view_post():
     posts = NewsPost.query.order_by(NewsPost.date_posted)
     return render_template('home/view_post.html', segment='index', posts=posts)
@@ -166,7 +165,6 @@ def edit_posts(id):
     form.author.choices = [(user.id, user.username) for user in users]
     form.categories.choices = [(c.id, c.name) for c in Category.query.order_by(Category.name).all()]
 
-    print(form.validate_on_submit())
     if form.validate_on_submit():
         post.title = form.title.data
         post.author_id = form.author.data  # assuming it's an ID
@@ -216,22 +214,16 @@ def edit_posts(id):
     form.content.data = post.content
     form.categories.data = post.category_id
     form.status.data = post.status
-    
     print(form.errors)
     return render_template("home/edit_posts.html", form=form, post=post)
 
-
 @blueprint.route('/create/post', methods =['GET','POST'])
 def create_post():
-
     form = PostForm()
-   
        # 🔹 Grab all users from the Users table
     users = Users.query.all()
         # 🔹 Populate the author select field with (id, username)
     form.author.choices = [(user.id, user.username) for user in users]
-
-  
     form.categories.choices = [(category.id, category.name) for category in Category.query.order_by(Category.name).all()]
     print(form.validate_on_submit())
     if form.validate_on_submit():
@@ -267,8 +259,6 @@ def create_post():
         flash("Blog Post Submitted Successfully!")
         return redirect(url_for('home_blueprint.index'))
         #return redirect(url_for('home_blueprint.posts_table'))
-
-        
     else:
         print(form.errors)
     return render_template('home/create_post.html', form=form,segment='index')
@@ -296,7 +286,6 @@ def route_template(template):
 
     except:
         return render_template('home/page-500.html'), 500
-
 
 # Helper - Extract current page name from request
 def get_segment(request):

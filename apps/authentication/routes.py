@@ -2,7 +2,6 @@
 """
 Copyright (c) 2019 - present AppSeed.us
 """
-
 from flask import render_template, redirect, request, url_for, flash,current_app,session
 from flask_login import (
     current_user,
@@ -72,7 +71,6 @@ def assign_permissions_to_roles():
         else:
             if permission.description != description:
                 permission.description = description
-
 
     roles = {
         'Admin': {
@@ -173,7 +171,6 @@ def edit_role(id):
                          role=role, 
                          permissions=Permission.query.all())
 
-
 @blueprint.route('/roles/delete/<int:id>', methods=['GET','POST'])
 def delete_role(id):
     role = Role.query.get_or_404(id)
@@ -191,7 +188,6 @@ def delete_role(id):
         flash(f'Error deleting role: {str(e)}', 'danger')
     
     return redirect(url_for('authentication_blueprint.role_list'))
-
 
 @blueprint.route('/roles')
 def role_list():
@@ -232,7 +228,6 @@ def edit_permission(id):
         form = PermissionForm(obj=permission)  # GET: pre-fill form
 
     return render_template('accounts/edit_permission.html', form=form, permission=permission)
-
 
 @blueprint.route('/permissions/delete/<int:perm_id>', methods=['POST', 'GET'])
 def delete_permission(perm_id):
@@ -362,7 +357,6 @@ def add_user():
 
     else:
         print(form.errors)
-
     
     our_users = Users.query.order_by(Users.date_added)
     return render_template("accounts/add_user.html", form=form, username=username, our_users=our_users,segment ='index')
@@ -429,7 +423,6 @@ def forgot_password():
             flash('No account found with that email address.', 'warning')
     return render_template('accounts//forgot_password.html', form = form)
 
-
 @blueprint.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_password(token):
     user = Users.verify_reset_token(token)
@@ -460,10 +453,8 @@ def reset_password(token):
 
 
 @blueprint.route('/login', methods=['GET', 'POST'])
-def login():
-     
+def login():  
     login_form = LoginForm()
-
     if login_form.validate_on_submit():
         username = login_form.username.data
         password = login_form.password.data
@@ -472,7 +463,6 @@ def login():
         user = Users.query.filter_by(username=username).first()
         ip = request.remote_addr
         ua = request.headers.get('User-Agent')
-    
 
         # Check the password
         if user and verify_pass(password, user.password):
